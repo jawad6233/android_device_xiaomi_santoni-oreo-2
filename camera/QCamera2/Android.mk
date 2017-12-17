@@ -71,8 +71,8 @@ LOCAL_C_INCLUDES := \
         $(LOCAL_PATH)/util \
         $(LOCAL_PATH)/HAL3 \
         hardware/libhardware/include/hardware \
-        hardware/qcom/media/libstagefrighthw \
-        hardware/qcom/media/mm-core/inc \
+        $(call project-path-for,qcom-media)/libstagefrighthw \
+        $(call project-path-for,qcom-media)/mm-core/inc \
         system/core/include/cutils \
         system/core/include/system \
         system/media/camera/include/system \
@@ -81,7 +81,7 @@ LOCAL_C_INCLUDES := \
 
 #HAL 1.0 Include paths
 LOCAL_C_INCLUDES += \
-        hardware/qcom/camera/QCamera2/HAL
+        $(LOCAL_PATH)/HAL
 
 LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
 LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
@@ -101,7 +101,7 @@ endif
 LOCAL_C_INCLUDES += \
         $(TARGET_OUT_HEADERS)/qcom/display
 LOCAL_C_INCLUDES += \
-        hardware/qcom/display/libqservice
+        $(call project-path-for,qcom-display)/libqservice
 LOCAL_SHARED_LIBRARIES := libcamera_client liblog libhardware libutils libcutils libdl libsync libgui
 LOCAL_SHARED_LIBRARIES += libsensor libstagefrighthw libhidltransport android.hidl.token@1.0-utils android.hardware.graphics.bufferqueue@1.0
 LOCAL_SHARED_LIBRARIES += libmmcamera_interface libmmjpeg_interface libui libcamera_metadata
