@@ -128,6 +128,10 @@ on boot
 
     #Create NETMGR daemon socket area
     mkdir /dev/socket/netmgr 0750 radio radio
+    
+    #enable camera read sensors data
+    setprop persist.camera.gyro.disable 0
+    setprop persist.camera.stats.test 5
 
     #Remove SUID bit for iproute2 ip tool
     chmod 0755 /system/bin/ip
@@ -1009,6 +1013,13 @@ on property:persist.sys.fp.vendor=goodix
     setprop ro.boot.fpsensor gdx
     setprop ro.hardware.fingerprint goodix
     start fps_hal
+    
+# Start camera server as daemon
+service qcamerasvr /system/bin/mm-qcamera-daemon
+    class late_start
+    user camera
+    group camera system inet input graphics
+    writepid /dev/cpuset/camera-daemon/tasks
 
 service displayfeature /system/bin/displayfeature
     class main
