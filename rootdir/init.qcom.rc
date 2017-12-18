@@ -159,34 +159,13 @@ on boot
     # bond0 used by FST Manager
     chown wifi wifi /sys/class/net/bond0/bonding/queue_id
 
-    # Fingerprint
-        # Goodix Fingerprint
+    # Goodix Fingerprint
     chown system system /dev/goodix_fp
     chmod 0644 /dev/goodix_fp        
     
     setprop persist.sys.fp.vendor none
     start gx_fpd
     
-    #weidong,add the fp sensor infomation,20161122,start
-    on property:persist.sys.fp.vendor=switchf
-	setprop ro.boot.fpsensor fpc
-
-    on property:persist.sys.fp.vendor=goodix
-	setprop ro.boot.fpsensor gdx
-	setprop goodix.fp.miui.analyse 1
-    #weidong,add the fp sensor infomation,20161122,end
-
-    chown system system /sys/devices/soc/soc:fpc1020/compatible_all
-    chmod 0664 /sys/devices/soc/soc:fpc1020/compatible_all
-    chown system system /sys/devices/soc/soc:fpc1020/irq
-    chmod 0660 /sys/devices/soc/soc:fpc1020/irq
-    chown system system /sys/devices/soc/soc:fpc1020/hw_reset
-    chmod 0660 /sys/devices/soc/soc:fpc1020/hw_reset
-    chown system system /sys/devices/soc/soc:fpc1020/wakeup_enable
-    chmod 0660 /sys/devices/soc/soc:fpc1020/wakeup_enable
-    chown system system /sys/devices/soc/soc:fpc1020/wakeup_enable
-    chmod 0660 /sys/devices/soc/soc:fpc1020/wakeup_enable
-
     # Glove Mode
     chown system system /sys/class/tp_glove/device/glove_enable
     chmod 0660 /sys/class/tp_glove/device/glove_enable
@@ -1014,16 +993,10 @@ service time_daemon /system/vendor/bin/time_daemon
     writepid /dev/cpuset/system-background/tasks
 
 service gx_fpd /system/bin/gx_fpd
-     class core
-     user root
-     group system system
-     writepid /dev/cpuset/system-background/tasks
-     disabled
-
-service fingerprint_log /system/bin/fingerprint_log
-    class late_start
-    user system
-    group system sdcard_rw
+    class core
+    user root
+    group system system
+    writepid /dev/cpuset/system-background/tasks
     disabled
 
 on property:persist.sys.fp.vendor=switchf
@@ -1033,16 +1006,10 @@ on property:persist.sys.fp.vendor=switchf
     setprop ro.hardware.fingerprint searchf
     start fps_hal
 
-on property:persist.sys.fp.onstart=1
-   setprop ro.boot.fpsensor gdx
-   setprop ro.hardware.fingerprint goodix
-   start fps_hal
-
-on property:persist.sys.wingtech.debug=1
-   start fingerprint_log
-
-on property:persist.sys.wingtech.debug=0
-   stop fingerprint_log
+on property:persist.sys.fp.vendor=goodix
+    setprop ro.boot.fpsensor gdx
+    setprop ro.hardware.fingerprint goodix
+    start fps_hal
 
 service displayfeature /system/bin/displayfeature
     class main
